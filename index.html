@@ -304,8 +304,6 @@
 
             // === 本機影片全螢幕與播放控制 ===
             if (currentSlideIndex === 3) {
-                // 自動播放 (如果之前有指定從第 8 秒開始，可以取消下一行的註解)
-                // projectVideo.currentTime = 8;
                 projectVideo.play().catch(e => console.log("等待互動後播放"));
                 
                 // 進入全螢幕
