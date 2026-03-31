@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://yihua0988.github.io/1150402point/sitemap.xml
