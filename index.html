@@ -2,8 +2,8 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>案例分析：未來建築-智慧工地的安全革命</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>技術實作報告：未來建築-智慧工地系統</title>
     <style>
         :root {
             --bg-dark: #1a1e23;
@@ -26,6 +26,7 @@
             background-color: var(--bg-dark); 
             color: var(--text-main);
             overflow: hidden; 
+            touch-action: pan-y; 
         }
 
         .slide-master-container {
@@ -43,58 +44,71 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px 4%; 
+            padding: 20px 5%; 
             position: relative;
             background-image: radial-gradient(circle at 50% 50%, #252a31 0%, #1a1e23 100%);
         }
 
+        /* 電腦版字體 */
         h1 {
             color: var(--accent-yellow);
-            font-size: 6.75rem; 
-            margin-bottom: 15px;
+            font-size: 6rem; 
+            margin-bottom: 20px;
             text-align: center;
             letter-spacing: 2px;
         }
         h2 {
             color: var(--accent-blue);
-            font-size: 3.75rem; 
-            margin-bottom: 25px;
-            border-bottom: 2px solid #3f4753;
-            padding-bottom: 10px;
+            font-size: 4.8rem; 
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3f4753;
+            padding-bottom: 15px;
             width: 100%;
         }
         
         p, li {
-            font-size: 2.7rem; 
-            line-height: 1.6;
-            margin-bottom: 18px;
+            font-size: 3.5rem; 
+            line-height: 1.5;
+            margin-bottom: 25px;
             color: var(--text-main);
+            text-align: justify;
         }
+        
         ul {
             width: 100%;
-            padding-left: 45px;
+            padding-left: 20px;
             list-style-type: none;
+        }
+        ul li {
+            position: relative;
+            padding-left: 55px;
+            margin-bottom: 35px;
         }
         ul li::before {
             content: "➤"; 
             color: var(--accent-yellow);
-            margin-right: 15px;
-            font-size: 2.25rem; 
+            position: absolute;
+            left: 0;
+            top: 5px;
+            font-size: 3rem; 
+        }
+        .agenda-list li::before {
+            content: "✦";
         }
 
         .content-grid {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr; 
-            gap: 40px;
+            grid-template-columns: 1fr 1fr; 
+            gap: 50px;
             width: 100%;
             align-items: center;
         }
 
         .img-container {
             width: 100%;
-            height: 70vh; 
+            height: 60vh; 
             background-color: #000;
-            border: 3px solid #3f4753;
+            border: 4px solid #3f4753;
             border-radius: 12px;
             overflow: hidden;
             display: flex;
@@ -103,29 +117,10 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             position: relative;
         }
-        
         .img-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover; 
-        }
-
-        .img-container::after {
-            content: attr(data-placeholder);
-            position: absolute;
-            color: var(--text-muted);
-            font-size: 1.8rem;
-            z-index: -1;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .info-card {
-            background: var(--bg-card);
-            border-left: 8px solid var(--accent-yellow);
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            object-fit: contain; 
         }
 
         .video-container {
@@ -137,11 +132,10 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             border: 2px solid #3f4753;
         }
-        
         .video-container video {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* 確保影片比例正確 */
+            object-fit: contain; 
         }
 
         .progress-bar-container {
@@ -149,7 +143,7 @@
             bottom: 0;
             left: 0;
             width: 100vw;
-            height: 8px;
+            height: 10px;
             background-color: #1a1e23;
             z-index: 100;
         }
@@ -159,63 +153,146 @@
             width: 0%; 
             transition: width 0.3s ease;
         }
+        
         .page-num {
             position: fixed;
-            bottom: 25px;
-            right: 35px; 
-            font-size: 1.8rem; 
+            bottom: 30px;
+            left: 40px; 
+            font-size: 2.2rem; 
             color: var(--text-muted);
             z-index: 100;
+        }
+
+        .qr-code-container {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            width: 120px;
+            height: 120px;
+            background-color: #fff;
+            border: 4px solid #fff;
+            border-radius: 8px;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+        }
+        .qr-code-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        @media (max-width: 1024px) {
+            h1 { font-size: 4.5rem; }
+            h2 { font-size: 3.5rem; }
+            p, li { font-size: 2.5rem; }
+            .qr-code-container { width: 90px; height: 90px; bottom: 25px; right: 25px; }
+            .page-num { left: 25px; bottom: 25px; font-size: 1.8rem; }
+        }
+
+        @media (max-width: 768px) {
+         
+            .slide { 
+                padding: 40px 6% 120px 6%; 
+                justify-content: flex-start; 
+                overflow-y: auto; 
+            }
+            h1 { font-size: 3.2rem; margin-top: 10px; margin-bottom: 15px; }
+            h2 { font-size: 2.4rem; margin-bottom: 20px; border-bottom-width: 2px; }
+            p, li { font-size: 1.8rem; margin-bottom: 15px; line-height: 1.4; }
+          
+            ul li { padding-left: 30px; margin-bottom: 15px; }
+            ul li::before { font-size: 1.6rem; top: 2px; }
+
+            .slide.active h2:first-child { font-size: 2rem; margin-bottom: 5px; border: none; }
+         
+            .content-grid { grid-template-columns: 1fr; gap: 20px; display: block;} 
+            .img-container { 
+                height: 30vh; 
+                margin-bottom: 20px; 
+                border-width: 2px;
+            }
+            .video-container { height: 35vh; margin-top: 10px; }
+
+            .qr-code-container { 
+                width: 70px; 
+                height: 70px; 
+                bottom: 20px; 
+                right: 20px; 
+                border-width: 2px;
+            }
+            .qr-code-container::after { font-size: 1.5rem; }
+            .page-num { left: 20px; bottom: 20px; font-size: 1.5rem; }
+            .progress-bar-container { height: 6px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="qr-code-container">
+        <img src="qrcode.png" alt="QR Code" onerror="this.style.opacity='0'">
+    </div>
+
     <div class="slide-master-container" id="slideMaster">
         
         <div class="slide active">
-            <h2 style="border:none; text-align:center; color: var(--text-muted); font-size: 2.7rem; margin-bottom: 0;">優秀專案案例分析報告</h2>
+            <h2 style="border:none; text-align:center; color: var(--text-muted); font-size: 3.5rem; margin-bottom: 0;">技術實作與系統架構分析報告</h2>
             <h1 style="margin-top: 10px;">未來建築：智慧工地的安全革命</h1>
             
-            <div class="img-container" data-placeholder="請將封面圖片命名為 cover.jpg 並放入同資料夾" style="height: 55vh; width: 85%; margin: 25px 0;">
+            <div class="img-container" data-placeholder="請將封面圖片命名為 cover.jpg 並放入同資料夾" style="height: 45vh; width: 100%; margin: 20px 0;">
                 <img src="cover.jpg" alt="封面主視覺" onerror="this.style.display='none'">
             </div>
             
-            <p style="font-size: 2.4rem; color: var(--accent-blue); margin-bottom: 5px;">第21屆 育秀盃數位應用類 銅獎作品</p>
-            <p style="font-size: 2.1rem; color: var(--text-muted);">報告人：112年資科系洪益華</p>
+            <p style="font-size: 3rem; color: var(--accent-blue); margin-bottom: 5px; text-align: center;">第21屆 育秀盃數位應用類 銅獎作品解析</p>
+            <p style="font-size: 2.5rem; color: var(--text-muted); text-align: center;">報告人：資訊科技系 洪益華</p>
         </div>
 
         <div class="slide">
-            <h2>🏆 專案背景與原創團隊</h2>
+            <h2>簡報大綱</h2>
             <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
-                <div class="info-card" style="padding: 60px; line-height: 2.2; font-size: 3rem;">
-                    <p><strong>得獎賽事：</strong> 第21屆育秀盃創意獎</p>
-                    <p><strong>獲獎獎項：</strong> 數位應用類 —— 銅獎</p>
-                    <p><strong>代表學校：</strong> 樹德科大資工所、中山大學資工博士班</p>
-                    <p><strong>創作團隊：</strong> 盧致傑、洪銓盛</p>
-                    <p><strong>指導老師：</strong> 陳璽煌 教授</p>
-                </div>
+                <ul class="agenda-list" style="margin-top: 20px;">
+                    <li><strong>壹、硬體配置與網路通訊架構</strong></li>
+                    <li><strong>貳、系統核心運作實際展示</strong></li>
+                    <li><strong>參、軟體核心：AI 辨識與模型訓練</strong></li>
+                    <li><strong>肆、動態邏輯追蹤與自動化警示</strong></li>
+                    <li><strong>伍、系統核心價值與法規落地總結</strong></li>
+                </ul>
             </div>
         </div>
 
         <div class="slide">
-            <h2>⚠️ 傳統工地的痛點與法規挑戰</h2>
+            <h2>專題實作方式：硬體配置 (1/2)</h2>
             <div class="content-grid">
-                <div class="img-container" data-placeholder="請將痛點示意圖命名為 problem.jpg">
-                    <img src="problem.jpg" alt="工地痛點" onerror="this.style.display='none'">
+                <div class="img-container" data-placeholder="請將硬體架構圖命名為 problem.jpg">
+                    <img src="problem.jpg" alt="硬體架構" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>管理困難：</strong> 人力巡檢死角多，無法全天候監控。</li>
-                        <li><strong>裝備疏漏：</strong> 工人常因悶熱或貪圖方便，未確實配戴安全帽與安全帶。</li>
-                        <li><strong>法規壓力：</strong> 《勞安法》要求雇主須負防護管理責任，意外將臨重罰。</li>
+                        <li><strong>終端影像擷取：</strong><br>採用旋轉式IP攝影機，大範圍擷取現場高解析度影像。</li>
+                        <li><strong>獨立能源系統(亮點)：</strong><br>整合「太陽能供電支架」，完美克服營造工地初期缺乏實體電網的痛點。</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>🎥 系統實際運作展示</h2>
+            <h2>專題實作方式：網路傳輸(2/2)</h2>
+            <div class="content-grid">
+                <div class="img-container" data-placeholder="請將硬體架構圖命名為 problem.jpg">
+                    <img src="problem.jpg" alt="硬體架構" onerror="this.style.display='none'">
+                </div>
+                <div>
+                    <ul>
+                        <li><strong>遠端通訊傳輸：</strong><br>透過4G LTE網路模組，將影像數據無延遲回傳至伺服器。</li>
+                        <li><strong>物聯網協定：</strong><br>採用輕量化MQTT協定，確保低頻寬下仍能穩定交換資訊。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>系統核心運作展示</h2>
             <div class="video-container" id="videoContainer">
                 <video id="projectVideo" controls>
                     <source src="video/第21屆育秀盃數位應用類 決賽入圍 SA212379-「未來建築：智慧工地的安全革命」.mp4" type="video/mp4">
@@ -225,61 +302,94 @@
         </div>
 
         <div class="slide">
-            <h2>🧠 核心技術：AI 電腦視覺即時辨識</h2>
-            <div class="content-grid" style="grid-template-columns: 0.9fr 1.1fr;">
-                <div>
-                    <div class="info-card" style="border-left-color: var(--accent-blue); padding: 25px;">
-                        <p style="color: var(--accent-blue); font-weight: bold; margin-bottom: 10px;">PPE 裝備偵測</p>
-                        <p style="font-size: 2.3rem;">系統利用 AI 模型即時分析畫面。若偵測未戴安全帽或安全帶，立即發出警報。</p>
-                    </div>
-                    <ul style="margin-top: 20px;">
-                        <li>取代人工，實現零死角監測。</li>
-                        <li>將「事後究責」轉為「事前預警」。</li>
-                    </ul>
-                </div>
-                
+            <h2>專題實作方式：AI辨識核心(1/2)</h2>
+            <div class="content-grid">
                 <div class="img-container" data-placeholder="請將AI辨識截圖命名為 ai-detect.jpg">
                     <img src="ai-detect.jpg" alt="AI辨識截圖" onerror="this.style.display='none'">
+                </div>
+                <div>
+                    <ul>
+                        <li><strong>邊緣運算模型：</strong><br>採用YOLO演算法作為視覺核心，能即時框列多個目標。</li>
+                        <li><strong>影像處理框架：</strong><br>搭配OpenCV進行影像切割拼接，建構遠端監控儀表板。</li>
+                    </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>🚧 進階功能：特定區域行為監控</h2>
+            <h2>專題實作方式：模型訓練 (2/2)</h2>
+            <div class="content-grid">
+                <div class="img-container" data-placeholder="請將AI辨識截圖命名為 ai-detect.jpg">
+                    <img src="ai-detect.jpg" alt="AI辨識截圖" onerror="this.style.display='none'">
+                </div>
+                <div>
+                    <ul>
+                        <li><strong>PPE特徵訓練：</strong><br>收集工地實景圖庫，針對「安全帽」與「安全帶」進行深度學習標註。</li>
+                        <li><strong>後端接收處理：</strong><br>伺服器撰寫 Python 腳本，持續將影像送入模型進行推論。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>專題實作方式：動態追蹤(1/2)</h2>
             <div class="content-grid">
                 <div class="img-container" data-placeholder="請將區域監控圖片命名為 area-monitor.jpg">
                     <img src="area-monitor.jpg" alt="區域監控" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>動態行為辨識：</strong> AI 模組能迅速辨識工人動態。</li>
-                        <li><strong>危險區域預警：</strong> 誤闖吊裝作業區或開口處，系統及時回報。</li>
-                        <li><strong>資料留存：</strong> 異常狀況數位化，作為安全稽核依據。</li>
+                        <li><strong>動態行為與軌跡：</strong><br>透過物件追蹤演算法計算人員移動軌跡，判定不安全行為。</li>
+                        <li><strong>地理圍欄技術：</strong><br>以程式碼劃定「高風險區域」，人員闖入即啟動警示。</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>💡 案例總結與技術啟發</h2>
-            <div class="info-card" style="margin-bottom: 30px; text-align: center; border: none; background: #2d3748;">
-                <h3 style="color: var(--accent-yellow); font-size: 3rem; margin-bottom: 0;">「兼具法規合法性與高效運作的新標準」</h3>
+            <h2>專題實作方式：自動化警示 (2/2)</h2>
+            <div class="content-grid">
+                <div class="img-container" data-placeholder="請將區域監控圖片命名為 area-monitor.jpg">
+                    <img src="area-monitor.jpg" alt="區域監控" onerror="this.style.display='none'">
+                </div>
+                <div>
+                    <ul>
+                        <li><strong>即時推播API：</strong><br>系統後端深度整合LINE Notify API服務。</li>
+                        <li><strong>一秒內通報：</strong><br>發送真實違規訊息，例如：<br><span style="color: #f6ad55; font-size: 2.2rem;">【佩戴安全裝備異常】人員未佩戴安全帽進入！</span><br>並附帶現場截圖。</li>
+                    </ul>
+                </div>
             </div>
-            <ul>
-                <li><strong>科技賦能管理：</strong> 證明 IoT 與 AI 能解決營造業長期人力管理痛點。</li>
-                <li><strong>合規性設計：</strong> 緊扣《勞安法》，解決業界最真實的法律風險。</li>
-                <li><strong>未來發展性：</strong> 可延伸整合至工廠廠房、危險倉儲，具極高商業價值。</li>
-            </ul>
         </div>
 
         <div class="slide">
-            <h1 style="font-size: 9rem; color: var(--accent-yellow);">Q & A</h1>
-            <p style="font-size: 3.75rem; color: var(--accent-blue); margin-top: 30px;">簡報結束，開放提問</p>
+            <h2>系統核心價值與法規落地 (1/2)</h2>
+            <div style="width: 100%; max-width: 1300px; margin: 0 auto;">
+                <ul>
+                    <li><strong>跨領域技術整合：</strong><br>成功將硬體感測(IP Cam/太陽能)、通訊(MQTT)、軟體(YOLO)與第三方API(LINE)進行深度縫合。</li>
+                    <li><strong>精準對應法規：</strong><br>系統邏輯直接對應《勞工安全衛生設施規則》<strong>第 278、279、280、286-2 條</strong>，將法律風險控管數位化。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>系統核心價值與法規落地(2/2)</h2>
+            <div style="width: 100%; max-width: 1300px; margin: 0 auto;">
+                <ul>
+                    <li><strong>克服環境影像干擾：</strong><br>針對工地反光與粉塵，透過資料擴增(Data Augmentation) 訓練以降低誤判率。</li>
+                    <li><strong>跨場域應用價值：</strong><br>架構具高度彈性，不僅適用營造工地，亦實證可作為<strong>「智慧工廠(Smart Factory)AI中心回報器」</strong>。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide" style="justify-content: center;">
+            <h1 style="font-size: 6rem; color: var(--accent-yellow); border: none; margin-bottom: 30px;">報告完畢</h1>
+            <p style="font-size: 3rem; color: var(--accent-blue); text-align: center;">未來建築：智慧工地的安全革命</p>
+            <p style="font-size: 2rem; color: var(--text-muted); text-align: center; margin-top: 20px; margin-bottom: 80px;">感謝老師與各位同學的聆聽與指教</p>
         </div>
 
     </div>
 
-    <div class="page-num" id="pageNum">1 / 8</div>
+    <div class="page-num" id="pageNum">1 / 12</div>
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -302,11 +412,8 @@
             const progress = ((currentSlideIndex + 1) / slides.length) * 100;
             progressBar.style.width = `${progress}%`;
 
-            // === 本機影片全螢幕與播放控制 ===
-            if (currentSlideIndex === 3) {
+            if (currentSlideIndex === 4) {
                 projectVideo.play().catch(e => console.log("等待互動後播放"));
-                
-                // 進入全螢幕
                 if (videoContainer.requestFullscreen) {
                     videoContainer.requestFullscreen().catch(err => console.log(err));
                 } else if (videoContainer.webkitRequestFullscreen) { 
@@ -315,12 +422,7 @@
                     videoContainer.msRequestFullscreen();
                 }
             } else {
-                // 離開影片頁時，暫停影片
-                if (!projectVideo.paused) {
-                    projectVideo.pause();
-                }
-                
-                // 退出全螢幕
+                if (!projectVideo.paused) projectVideo.pause();
                 if (document.fullscreenElement) {
                     document.exitFullscreen().catch(err => console.log(err));
                 }
@@ -341,6 +443,7 @@
             }
         }
 
+        // 簡報筆與鍵盤控制
         document.addEventListener('keydown', (e) => {
             const nextKeys = ['PageDown', 'ArrowDown', 'ArrowRight', ' ', 'Enter', 'N', 'n'];
             const prevKeys = ['PageUp', 'ArrowUp', 'ArrowLeft', 'Backspace', 'P', 'p'];
@@ -354,7 +457,30 @@
             }
         });
 
+        // 觸控左右滑動支援 (手機/平板用)
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50; 
+            if (touchEndX < touchStartX - swipeThreshold) {
+                nextSlide(); 
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                prevSlide(); 
+            }
+        }
+
         updateDisplay();
     </script>
 </body>
-</html>
+</html>	
