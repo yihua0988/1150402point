@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-	<meta name="description" content="第21屆育秀盃數位應用類銅獎作品解析。未來建築：智慧工地安全監控系統的技術實作與系統架構分析報告。">
+    <meta name="description" content="第21屆育秀盃數位應用類銅獎作品解析。未來建築：智慧工地安全監控系統的技術實作與系統架構分析報告。">
     <meta name="keywords" content="智慧工地, AI影像辨識, 工安, 育秀盃, YOLO, MQTT">
     <meta name="author" content="洪益華">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -24,12 +24,14 @@
             padding: 0;
         }
 
-        body {
-            font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "黑體-繁", "微軟正黑體", sans-serif;
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden; 
             background-color: var(--bg-dark); 
             color: var(--text-main);
-            overflow: hidden; 
-            touch-action: pan-y; 
+            font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "黑體-繁", "微軟正黑體", sans-serif;
+            touch-action: none; 
         }
 
         .slide-master-container {
@@ -50,33 +52,35 @@
             padding: 20px 5%; 
             position: relative;
             background-image: radial-gradient(circle at 50% 50%, #252a31 0%, #1a1e23 100%);
+            max-width: 100%;
         }
 
-        /* 電腦版字體 */
+        /* ================= 電腦版排版 ================= */
         h1 {
             color: var(--accent-yellow);
-            font-size: 6rem; 
+            font-size: 5rem; 
             margin-bottom: 20px;
             text-align: center;
             letter-spacing: 2px;
+            width: 100%;
+            word-wrap: break-word; 
         }
         h2 {
             color: var(--accent-blue);
-            font-size: 4.8rem; 
-            margin-bottom: 30px;
-            border-bottom: 3px solid #3f4753;
-            padding-bottom: 15px;
-            width: 100%;
-        }
-        
-        p, li {
             font-size: 3.5rem; 
+            margin-bottom: 20px;
+            border-bottom: 3px solid #3f4753;
+            padding-bottom: 10px;
+            width: 100%;
+            text-align: left;
+        }
+        p, li {
+            font-size: 2.4rem; 
             line-height: 1.5;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             color: var(--text-main);
             text-align: justify;
         }
-        
         ul {
             width: 100%;
             padding-left: 20px;
@@ -84,51 +88,72 @@
         }
         ul li {
             position: relative;
-            padding-left: 55px;
-            margin-bottom: 35px;
+            padding-left: 50px;
+            margin-bottom: 25px;
         }
         ul li::before {
             content: "➤"; 
             color: var(--accent-yellow);
             position: absolute;
             left: 0;
-            top: 5px;
-            font-size: 3rem; 
+            top: 2px;
+            font-size: 2.6rem; 
         }
         .agenda-list li::before {
             content: "✦";
         }
 
+        .cover-top-title { font-size: 3rem !important; margin-bottom: 0; }
+        .cover-subtitle { font-size: 2.8rem; margin-bottom: 5px; }
+        .cover-author { font-size: 2.2rem; }
+        
+        .end-title { font-size: 7rem !important; margin-bottom: 20px; border: none !important; }
+        .end-subtitle { font-size: 3.5rem; }
+        .end-text { font-size: 2.2rem; margin-top: 15px; margin-bottom: 60px; }
+
+        .alert-text { font-size: 2.8rem; color: var(--accent-yellow); font-weight: bold; }
+
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 1fr; 
-            gap: 50px;
+            gap: 40px;
             width: 100%;
+            max-width: 1400px; 
             align-items: center;
         }
 
         .img-container {
             width: 100%;
-            height: 60vh; 
+            height: 400px; 
             background-color: #000;
             border: 4px solid #3f4753;
             border-radius: 12px;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
             position: relative;
+            overflow: hidden; 
         }
         .img-container img {
             width: 100%;
             height: 100%;
             object-fit: contain; 
         }
+        .img-container::after {
+            content: attr(data-placeholder);
+            position: absolute;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            z-index: -1;
+            text-align: center;
+            padding: 20px;
+        }
 
         .video-container {
             width: 100%;
-            height: 75vh;
+            max-width: 1200px; 
+            height: 60vh;
             background-color: black;
             border-radius: 12px;
             overflow: hidden;
@@ -146,7 +171,7 @@
             bottom: 0;
             left: 0;
             width: 100vw;
-            height: 10px;
+            height: 8px;
             background-color: #1a1e23;
             z-index: 100;
         }
@@ -159,19 +184,19 @@
         
         .page-num {
             position: fixed;
-            bottom: 30px;
-            left: 40px; 
-            font-size: 2.2rem; 
+            bottom: 20px;
+            left: 30px; 
+            font-size: 1.8rem; 
             color: var(--text-muted);
             z-index: 100;
         }
 
         .qr-code-container {
             position: fixed;
-            bottom: 30px;
-            right: 40px;
-            width: 120px;
-            height: 120px;
+            bottom: 20px;
+            right: 30px;
+            width: 100px;
+            height: 100px;
             background-color: #fff;
             border: 4px solid #fff;
             border-radius: 8px;
@@ -181,53 +206,62 @@
             align-items: center;
             box-shadow: 0 5px 20px rgba(0,0,0,0.6);
         }
-        .qr-code-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .qr-code-container img { width: 100%; height: 100%; object-fit: cover; }
+        .qr-code-container::after {
+            content: "QR"; position: absolute; color: #aaa; font-weight: bold; font-size: 2rem; z-index: 0;
         }
+
+        /* ================= 平板版排版 ================= */
         @media (max-width: 1024px) {
-            h1 { font-size: 4.5rem; }
-            h2 { font-size: 3.5rem; }
-            p, li { font-size: 2.5rem; }
-            .qr-code-container { width: 90px; height: 90px; bottom: 25px; right: 25px; }
-            .page-num { left: 25px; bottom: 25px; font-size: 1.8rem; }
+            h1 { font-size: 4rem; }
+            h2 { font-size: 2.8rem; }
+            p, li { font-size: 1.8rem; }
+            ul li::before { font-size: 2rem; top: 0; }
+            
+            .cover-top-title { font-size: 2.4rem !important; }
+            .cover-subtitle { font-size: 2rem; }
+            .cover-author { font-size: 1.6rem; }
+            .end-title { font-size: 5rem !important; }
+            .end-subtitle { font-size: 2.5rem; }
+            .end-text { font-size: 1.6rem; }
+            .alert-text { font-size: 2.2rem; }
+
+            .img-container { height: 300px; } 
+            .qr-code-container { width: 80px; height: 80px; bottom: 15px; right: 15px; }
+            .page-num { left: 15px; bottom: 15px; font-size: 1.5rem; }
+            .content-grid { gap: 20px; }
         }
 
+        /* ================= 手機版排版 ================= */
         @media (max-width: 768px) {
-         
-            .slide { 
-                padding: 40px 6% 120px 6%; 
-                justify-content: flex-start; 
-                overflow-y: auto; 
-            }
-            h1 { font-size: 3.2rem; margin-top: 10px; margin-bottom: 15px; }
-            h2 { font-size: 2.4rem; margin-bottom: 20px; border-bottom-width: 2px; }
-            p, li { font-size: 1.8rem; margin-bottom: 15px; line-height: 1.4; }
-          
-            ul li { padding-left: 30px; margin-bottom: 15px; }
-            ul li::before { font-size: 1.6rem; top: 2px; }
+            .slide { padding: 10px 5%; justify-content: center; }
+            h1 { font-size: 2.8rem; margin-bottom: 10px; line-height: 1.2; word-break: keep-all; } 
+            h2 { font-size: 2rem; margin-bottom: 10px; padding-bottom: 5px; }
+            p, li { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; }
+            ul li { padding-left: 25px; margin-bottom: 10px; }
+            ul li::before { font-size: 1.4rem; top: 0; }
 
-            .slide.active h2:first-child { font-size: 2rem; margin-bottom: 5px; border: none; }
-         
-            .content-grid { grid-template-columns: 1fr; gap: 20px; display: block;} 
-            .img-container { 
-                height: 30vh; 
-                margin-bottom: 20px; 
-                border-width: 2px;
-            }
-            .video-container { height: 35vh; margin-top: 10px; }
+            .cover-top-title { font-size: 1.8rem !important; }
+            .cover-subtitle { font-size: 1.5rem; }
+            .cover-author { font-size: 1.2rem; }
+            .end-title { font-size: 3.5rem !important; } 
+            .end-subtitle { font-size: 1.6rem; }
+            .end-text { font-size: 1.2rem; }
+            .alert-text { font-size: 1.5rem; }
+            
+            .content-grid { grid-template-columns: 1fr; gap: 10px; display: flex; flex-direction: column;} 
+            
+            .img-container { height: 220px; margin-bottom: 5px; border-width: 2px; }
+            .content-grid .img-container { order: -1; }
 
-            .qr-code-container { 
-                width: 70px; 
-                height: 70px; 
-                bottom: 20px; 
-                right: 20px; 
-                border-width: 2px;
-            }
-            .qr-code-container::after { font-size: 1.5rem; }
-            .page-num { left: 20px; bottom: 20px; font-size: 1.5rem; }
-            .progress-bar-container { height: 6px; }
+            .video-container { height: 30vh; margin-top: 10px; }
+
+            .qr-code-container { width: 60px; height: 60px; bottom: 15px; right: 15px; border-width: 2px; }
+            .qr-code-container::after { font-size: 1.2rem; }
+            .page-num { left: 15px; bottom: 15px; font-size: 1.2rem; }
+            .progress-bar-container { height: 5px; }
+            
+            .slide > div { max-height: 100%; width: 100%; }
         }
     </style>
 </head>
@@ -241,21 +275,21 @@
     <div class="slide-master-container" id="slideMaster">
         
         <div class="slide active">
-            <h2 style="border:none; text-align:center; color: var(--text-muted); font-size: 3.5rem; margin-bottom: 0;">技術實作與系統架構分析報告</h2>
+            <h2 class="cover-top-title" style="border:none; text-align:center; color: var(--text-muted);">技術實作與系統架構分析報告</h2>
             <h1 style="margin-top: 10px;">未來建築：智慧工地的安全革命</h1>
             
-            <div class="img-container" data-placeholder="請將封面圖片命名為 cover.jpg 並放入同資料夾" style="height: 45vh; width: 100%; margin: 20px 0;">
+            <div class="img-container" data-placeholder="請將封面圖片命名為 cover.jpg 並放入同資料夾" style="height: 40vh; margin: 15px 0;">
                 <img src="cover.jpg" alt="封面主視覺" onerror="this.style.display='none'">
             </div>
             
-            <p style="font-size: 3rem; color: var(--accent-blue); margin-bottom: 5px; text-align: center;">第21屆 育秀盃數位應用類 銅獎作品解析</p>
-            <p style="font-size: 2.5rem; color: var(--text-muted); text-align: center;">報告人：資訊科技系 洪益華</p>
+            <p class="cover-subtitle" style="color: var(--accent-blue); text-align: center;">第21屆 育秀盃數位應用類 銅獎作品解析</p>
+            <p class="cover-author" style="color: var(--text-muted); text-align: center;">報告人：資訊科技系 洪益華</p>
         </div>
 
         <div class="slide">
             <h2>簡報大綱</h2>
-            <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
-                <ul class="agenda-list" style="margin-top: 20px;">
+            <div style="width: 100%; max-width: 1000px; margin: 0 auto;">
+                <ul class="agenda-list" style="margin-top: 10px;">
                     <li><strong>壹、硬體配置與網路通訊架構</strong></li>
                     <li><strong>貳、系統核心運作實際展示</strong></li>
                     <li><strong>參、軟體核心：AI 辨識與模型訓練</strong></li>
@@ -266,30 +300,30 @@
         </div>
 
         <div class="slide">
-            <h2>專題實作方式：硬體配置 (1/2)</h2>
+            <h2>專題實作：硬體配置 (1/2)</h2>
             <div class="content-grid">
                 <div class="img-container" data-placeholder="請將硬體架構圖命名為 problem.jpg">
                     <img src="problem.jpg" alt="硬體架構" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>終端影像擷取：</strong><br>採用旋轉式IP攝影機，大範圍擷取現場高解析度影像。</li>
-                        <li><strong>獨立能源系統(亮點)：</strong><br>整合「太陽能供電支架」，完美克服營造工地初期缺乏實體電網的痛點。</li>
+                        <li><strong>終端影像擷取：</strong><br>旋轉式IP攝影機，大範圍擷取現場影像。</li>
+                        <li><strong>獨立能源系統(亮點)：</strong><br>「太陽能供電支架」，克服缺乏實體電網痛點。</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>專題實作方式：網路傳輸(2/2)</h2>
+            <h2>專題實作：網路傳輸 (2/2)</h2>
             <div class="content-grid">
                 <div class="img-container" data-placeholder="請將硬體架構圖命名為 problem.jpg">
                     <img src="problem.jpg" alt="硬體架構" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>遠端通訊傳輸：</strong><br>透過4G LTE網路模組，將影像數據無延遲回傳至伺服器。</li>
-                        <li><strong>物聯網協定：</strong><br>採用輕量化MQTT協定，確保低頻寬下仍能穩定交換資訊。</li>
+                        <li><strong>遠端通訊傳輸：</strong><br>4G LTE模組，影像數據無延遲回傳。</li>
+                        <li><strong>物聯網協定：</strong><br>輕量化MQTT協定，確保低頻寬穩定交換。</li>
                     </ul>
                 </div>
             </div>
@@ -298,102 +332,112 @@
         <div class="slide">
             <h2>系統核心運作展示</h2>
             <div class="video-container" id="videoContainer">
-                <video id="projectVideo" controls>
+                <video id="projectVideo" controls playsinline>
                     <source src="video/第21屆育秀盃數位應用類 決賽入圍 SA212379-「未來建築：智慧工地的安全革命」.mp4" type="video/mp4">
-                    您的瀏覽器不支援本機影片播放。
+                    您的瀏覽器不支援影片播放。
                 </video>
             </div>
         </div>
 
         <div class="slide">
-            <h2>專題實作方式：AI辨識核心(1/2)</h2>
+            <h2>專題實作：AI辨識核心 (1/2)</h2>
             <div class="content-grid">
                 <div class="img-container" data-placeholder="請將AI辨識截圖命名為 ai-detect.jpg">
                     <img src="ai-detect.jpg" alt="AI辨識截圖" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>邊緣運算模型：</strong><br>採用YOLO演算法作為視覺核心，能即時框列多個目標。</li>
-                        <li><strong>影像處理框架：</strong><br>搭配OpenCV進行影像切割拼接，建構遠端監控儀表板。</li>
+                        <li><strong>邊緣運算模型：</strong><br>YOLO視覺核心，即時框列多目標。</li>
+                        <li><strong>影像處理框架：</strong><br>OpenCV切割拼接，建構遠端儀表板。</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>專題實作方式：模型訓練 (2/2)</h2>
+            <h2>專題實作：模型訓練 (2/2)</h2>
             <div class="content-grid">
                 <div class="img-container" data-placeholder="請將AI辨識截圖命名為 ai-detect.jpg">
                     <img src="ai-detect.jpg" alt="AI辨識截圖" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>PPE特徵訓練：</strong><br>收集工地實景圖庫，針對「安全帽」與「安全帶」進行深度學習標註。</li>
-                        <li><strong>後端接收處理：</strong><br>伺服器撰寫 Python 腳本，持續將影像送入模型進行推論。</li>
+                        <li><strong>PPE特徵訓練：</strong><br>收集工地圖庫，進行安全帽帶深度學習標註。</li>
+                        <li><strong>後端接收處理：</strong><br>Python腳本，持續送入模型推論。</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>專題實作方式：動態追蹤(1/2)</h2>
+            <h2>專題實作：動態追蹤 (1/2)</h2>
             <div class="content-grid">
                 <div class="img-container" data-placeholder="請將區域監控圖片命名為 area-monitor.jpg">
                     <img src="area-monitor.jpg" alt="區域監控" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>動態行為與軌跡：</strong><br>透過物件追蹤演算法計算人員移動軌跡，判定不安全行為。</li>
-                        <li><strong>地理圍欄技術：</strong><br>以程式碼劃定「高風險區域」，人員闖入即啟動警示。</li>
+                        <li><strong>動態行為與軌跡：</strong><br>追蹤演算法計算移動，判定不安全行為。</li>
+                        <li><strong>地理圍欄技術：</strong><br>劃定「高風險區域」，闖入即啟動警示。</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>專題實作方式：自動化警示 (2/2)</h2>
+            <h2>專題實作：自動化警示 (2/2)</h2>
             <div class="content-grid">
                 <div class="img-container" data-placeholder="請將區域監控圖片命名為 area-monitor.jpg">
                     <img src="area-monitor.jpg" alt="區域監控" onerror="this.style.display='none'">
                 </div>
                 <div>
                     <ul>
-                        <li><strong>即時推播API：</strong><br>系統後端深度整合LINE Notify API服務。</li>
-                        <li><strong>一秒內通報：</strong><br>發送真實違規訊息，例如：<br><span style="color: #f6ad55; font-size: 2.2rem;">【佩戴安全裝備異常】人員未佩戴安全帽進入！</span><br>並附帶現場截圖。</li>
+                        <li><strong>即時推播API：</strong><br>整合 LINE Notify API 即時推播。<br><span style="font-size: 0.85em; color: var(--text-muted);">（註：此服務已停用，未來將以相似功能之服務取代）</span></li>
+                        <li><strong>一秒內通報：</strong><br>發送真實違規訊息，如：<br><span class="alert-text">【佩戴裝備異常】人員未佩戴安全帽進入！</span><br>並附帶現場截圖。</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>系統核心價值與法規落地 (1/2)</h2>
-            <div style="width: 100%; max-width: 1300px; margin: 0 auto;">
+            <h2>法規落地對應：職業安全衛生設施規則 (1/2)</h2>
+            <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
                 <ul>
-                    <li><strong>跨領域技術整合：</strong><br>成功將硬體感測(IP Cam/太陽能)、通訊(MQTT)、軟體(YOLO)與第三方API(LINE)進行深度縫合。</li>
-                    <li><strong>精準對應法規：</strong><br>系統邏輯直接對應《勞工安全衛生設施規則》<strong>第 278、279、280、286-2 條</strong>，將法律風險控管數位化。</li>
+                    <li><strong>第 278 條 (危險物處置)：</strong><br>法規明定處理危險物時，必須確實著用安全帽與防護衣帽。</li>
+                    <li><strong>系統對應與解決方案：</strong><br>導入 YOLO 邊緣運算進行全天候 AI 監測，完美填補人工巡檢的空窗期，將法律風險控管數位化。</li>
                 </ul>
             </div>
         </div>
 
         <div class="slide">
-            <h2>系統核心價值與法規落地(2/2)</h2>
-            <div style="width: 100%; max-width: 1300px; margin: 0 auto;">
+            <h2>法規落地對應：職業安全衛生設施規則 (2/2)</h2>
+            <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
                 <ul>
-                    <li><strong>克服環境影像干擾：</strong><br>針對工地反光與粉塵，透過資料擴增(Data Augmentation) 訓練以降低誤判率。</li>
-                    <li><strong>跨場域應用價值：</strong><br>架構具高度彈性，不僅適用營造工地，亦實證可作為<strong>「智慧工廠(Smart Factory)AI中心回報器」</strong>。</li>
+                    <li><strong>第 280 條 (飛落物防護) & 第 286-2 條 (高危外勤)：</strong><br>針對飛落物危害及天災高風險外勤，嚴格要求佩戴安全帽及配置通訊設備。</li>
+                    <li><strong>系統對應與解決方案：</strong><br>透過 MQTT 結合 LINE Notify API，異常時 1 秒內自動發送圖文警示，實現即時通報與數位蒐證。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>系統核心價值與跨場域應用</h2>
+            <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
+                <ul>
+                    <li><strong>跨領域技術深度整合：</strong><br>成功將硬體感測(IP Cam/太陽能)、通訊(MQTT)、AI視覺模組(YOLO與OpenCV)與API(LINE)進行無縫縫合。</li>
+                    <li><strong>克服環境干擾與高彈性架構：</strong><br>針對工地反光與粉塵，透過資料擴增(Data Augmentation)大幅降低誤判率。且架構不僅適用營造工地，亦可轉作「智慧工廠 AI 中心回報器」。</li>
                 </ul>
             </div>
         </div>
 
         <div class="slide" style="justify-content: center;">
-            <h1 style="font-size: 6rem; color: var(--accent-yellow); border: none; margin-bottom: 30px;">報告完畢</h1>
-            <p style="font-size: 3rem; color: var(--accent-blue); text-align: center;">未來建築：智慧工地的安全革命</p>
-            <p style="font-size: 2rem; color: var(--text-muted); text-align: center; margin-top: 20px; margin-bottom: 80px;">感謝老師與各位同學的聆聽與指教</p>
+            <h1 class="end-title" style="color: var(--accent-yellow);">報告完畢</h1>
+            <p class="end-subtitle" style="color: var(--accent-blue); text-align: center;">未來建築：智慧工地的安全革命</p>
+            <p class="end-text" style="color: var(--text-muted); text-align: center;">感謝老師與各位同學的聆聽與指教</p>
         </div>
 
     </div>
 
-    <div class="page-num" id="pageNum">1 / 12</div>
+    <div class="page-num" id="pageNum">1 / 13</div>
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -408,6 +452,8 @@
         const projectVideo = document.getElementById('projectVideo');
         const videoContainer = document.getElementById('videoContainer');
 
+        const isMobileOrTablet = /Mobi|Android|iPad|iPhone/i.test(navigator.userAgent) || window.innerWidth <= 1024;
+
         function updateDisplay() {
             const offset = -currentSlideIndex * 100;
             slideMaster.style.transform = `translateX(${offset}vw)`;
@@ -417,13 +463,19 @@
             progressBar.style.width = `${progress}%`;
 
             if (currentSlideIndex === 4) {
-                projectVideo.play().catch(e => console.log("等待互動後播放"));
-                if (videoContainer.requestFullscreen) {
-                    videoContainer.requestFullscreen().catch(err => console.log(err));
-                } else if (videoContainer.webkitRequestFullscreen) { 
-                    videoContainer.webkitRequestFullscreen();
-                } else if (videoContainer.msRequestFullscreen) { 
-                    videoContainer.msRequestFullscreen();
+                if (isMobileOrTablet) {
+                    projectVideo.muted = true;
+                    projectVideo.play().catch(e => console.log("手機需點擊播放"));
+                } else {
+                    projectVideo.muted = false;
+                    projectVideo.play().catch(e => console.log("等待互動後播放"));
+                    if (videoContainer.requestFullscreen) {
+                        videoContainer.requestFullscreen().catch(err => console.log(err));
+                    } else if (videoContainer.webkitRequestFullscreen) { 
+                        videoContainer.webkitRequestFullscreen();
+                    } else if (videoContainer.msRequestFullscreen) { 
+                        videoContainer.msRequestFullscreen();
+                    }
                 }
             } else {
                 if (!projectVideo.paused) projectVideo.pause();
@@ -447,7 +499,6 @@
             }
         }
 
-        // 簡報筆與鍵盤控制
         document.addEventListener('keydown', (e) => {
             const nextKeys = ['PageDown', 'ArrowDown', 'ArrowRight', ' ', 'Enter', 'N', 'n'];
             const prevKeys = ['PageUp', 'ArrowUp', 'ArrowLeft', 'Backspace', 'P', 'p'];
@@ -461,30 +512,40 @@
             }
         });
 
-        // 觸控左右滑動支援 (手機/平板用)
         let touchStartX = 0;
         let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
         
         document.addEventListener('touchstart', e => {
             touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: false });
+
+        document.addEventListener('touchmove', e => {
+            e.preventDefault(); 
+        }, { passive: false });
 
         document.addEventListener('touchend', e => {
             touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
             handleSwipe();
-        }, { passive: true });
+        }, { passive: false });
 
         function handleSwipe() {
-            const swipeThreshold = 50; 
-            if (touchEndX < touchStartX - swipeThreshold) {
-                nextSlide(); 
-            }
-            if (touchEndX > touchStartX + swipeThreshold) {
-                prevSlide(); 
+            const swipeX = touchEndX - touchStartX;
+            const swipeY = touchEndY - touchStartY;
+            
+            if (Math.abs(swipeX) > Math.abs(swipeY) && Math.abs(swipeX) > 40) {
+                if (swipeX < 0) {
+                    nextSlide(); 
+                } else {
+                    prevSlide(); 
+                }
             }
         }
 
         updateDisplay();
     </script>
 </body>
-</html>	
+</html>
