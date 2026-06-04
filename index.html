@@ -6,8 +6,7 @@
     <meta name="keywords" content="智慧工地, AI影像辨識, 工安, 邊緣運算, MQTT, 雙重解除">
     <meta name="author" content="洪益華">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<head>
-	<meta property="og:image" content="https://yihua0988.github.io/1150402point/cover.jpg">
+    <meta property="og:image" content="https://yihua0988.github.io/1150402point/cover.jpg">
     <meta property="og:image:width" content="1916">
     <meta property="og:image:height" content="908">
     <title>技術實作與升級構想：次世代智慧工地系統</title>
@@ -111,7 +110,7 @@
         .highlight { color: var(--accent-yellow); font-weight: bold; text-shadow: 0 0 10px var(--glow-yellow); }
         .alert-text { color: var(--accent-red); font-weight: 900; text-shadow: 0 0 15px var(--glow-red); }
 
-        /* 第八頁專屬：動態掃光文字 */
+        /* 第十頁專屬：動態掃光文字 */
         .dynamic-text {
             font-size: clamp(1.4rem, 1.8vw, 2.2rem) !important;
             margin-top: 15px; text-align: center; font-weight: bold; letter-spacing: 2px;
@@ -146,7 +145,7 @@
         }
         .large-video-container video { width: 100%; height: 100%; object-fit: contain; outline: none; }
 
-        /* ================= 第七頁：數據表 ================= */
+        /* ================= 數據表 ================= */
         .dashboard-panel { padding: clamp(15px, 2vw, 25px); width: 100%; }
         .panel-title { font-size: clamp(1.4rem, 2vw, 2rem); color: #fff; margin-bottom: 15px; font-weight: 800; border-left: 5px solid var(--accent-blue); padding-left: 15px; }
         
@@ -188,7 +187,7 @@
         }
         .qr-code-container img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover;}
 
-        /* 短螢幕防爆機制 (筆電高度不夠時，內容靠上對齊並產生滾動條) */
+        /* 短螢幕防爆機制 */
         @media (max-height: 800px) {
             .slide { justify-content: flex-start; padding-top: 60px; padding-bottom: 80px; }
         }
@@ -259,8 +258,9 @@
                     <li><strong>壹、專案回顧與系統展示</strong> (育秀盃銅獎基礎)</li>
                     <li><strong>貳、次世代實體架構：邊緣運算與封閉網路</strong></li>
                     <li><strong>參、防護與資安：實體阻斷、雙重解除與戰情備份</strong></li>
-                    <li><strong>肆、專案可行性評估：預算與時程規劃</strong></li>
-                    <li><strong>伍、完整系統運作展示影片</strong></li>
+                    <li><strong>肆、系統架構總覽：防護機制與資料流</strong></li>
+                    <li><strong>伍、專案可行性評估：預算與時程規劃</strong></li>
+                    <li><strong>陸、完整系統運作展示影片</strong></li>
                 </ul>
             </div>
         </div>
@@ -332,6 +332,14 @@
         </div>
 
         <div class="slide">
+            <h2><i class="fa-solid fa-project-diagram"></i>系統架構總覽：防護機制與資料流</h2>
+            <div class="content-grid" style="grid-template-columns: 1fr; justify-items: center;">
+                <div class="img-container" style="aspect-ratio: 16/9; max-height: 65vh; width: 100%; max-width: 1200px;">
+                    <img src="images/image_6.jpg" alt="系統架構圖">
+                </div>
+            </div>
+        </div>
+        <div class="slide">
             <h2><i class="fa-solid fa-chart-pie"></i>專案可行性：預算與時程評估</h2>
             <div class="content-grid" style="align-items: start; max-width: 1600px;">
                 
@@ -390,7 +398,7 @@
 
     </div>
 
-    <div class="page-num" id="pageNum">[ 1 / 9 ]</div>
+    <div class="page-num" id="pageNum">[ 1 / 10 ]</div>
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -415,22 +423,21 @@
             if (video1) video1.pause();
             if (video2) video2.pause();
             
-            // ================= 請替換從這裡開始 =================
-            // 智慧播放邏輯：第三頁影片
+            // 智慧播放邏輯：第三頁影片 (Index 2)
             if (currentSlideIndex === 2 && video1) {
-                video1.muted = false; // 先嘗試有聲播放
+                video1.muted = false; 
                 let playPromise = video1.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
                         console.log("瀏覽器阻擋有聲播放，自動退回靜音播放以免卡死");
-                        video1.muted = true; // 被擋掉就自動轉靜音
-                        video1.play();       // 靜音絕對播得出來
+                        video1.muted = true; 
+                        video1.play();       
                     });
                 }
             }
             
-            // 智慧播放邏輯：第八頁影片
-            if (currentSlideIndex === 7 && video2) {
+            // 智慧播放邏輯：第九頁影片 (原本 Index 7，加了一頁後變 Index 8)
+            if (currentSlideIndex === 8 && video2) {
                 video2.muted = false; 
                 let playPromise = video2.play();
                 if (playPromise !== undefined) {
@@ -446,10 +453,23 @@
         function nextSlide() { if (currentSlideIndex < slides.length - 1) { currentSlideIndex++; updateDisplay(); } }
         function prevSlide() { if (currentSlideIndex > 0) { currentSlideIndex--; updateDisplay(); } }
 
+        // ================= 修復影片卡鍵盤的終極邏輯 =================
         document.addEventListener('keydown', (e) => {
-            if (['PageDown', 'ArrowDown', 'ArrowRight', ' '].includes(e.key)) nextSlide();
-            if (['PageUp', 'ArrowUp', 'ArrowLeft'].includes(e.key)) prevSlide();
+            const isVideoFocused = document.activeElement && document.activeElement.tagName.toLowerCase() === 'video';
+
+            // 如果焦點在影片上，且按下空白鍵，讓影片暫停/播放，不要翻頁
+            if (isVideoFocused && e.key === ' ') return;
+
+            if (['PageDown', 'ArrowDown', 'ArrowRight', ' '].includes(e.key)) {
+                e.preventDefault(); // 強制封鎖影片快進
+                nextSlide();
+            }
+            if (['PageUp', 'ArrowUp', 'ArrowLeft'].includes(e.key)) {
+                e.preventDefault(); // 強制封鎖影片倒退
+                prevSlide();
+            }
         });
+        // ==============================================================
 
         let touchStartX = 0, touchStartY = 0;
         document.addEventListener('touchstart', e => { 
